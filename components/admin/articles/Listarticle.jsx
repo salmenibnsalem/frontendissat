@@ -29,11 +29,23 @@ const Listarticle = () => {
       </center></>
     )
   }
+const handleDelete=async(id)=>{
+  window.confirm("Etes vous sure de vouloir supprimer")
+  {
+  try{
+  await axios.delete(`https://backend-ecommerce-one-bay.vercel.app/api/article/${id}`)
+  setArticles(articles.filter(article=>article._id!=id))
+}catch(error){
+  console.log(error)
+
+}
+}
+}
   return (
 
     <div>
       <p>
-      <td><Link to="/articles/add"><button className='btn btn-success btn-sm'><i class="fa-solid fa-square-plus"></i> Nouveau</button></Link></td>
+      <td><Link to="/articles/add" ><button className='btn btn-success btn-sm'><i class="fa-solid fa-square-plus"></i> Nouveau</button></Link></td>
       </p>
     <center> <h1>Liste article</h1></center>
     <table className='table table-stripes'>
@@ -61,7 +73,7 @@ const Listarticle = () => {
             <td>{art.prix}</td>
             <td><img src={art.imageart} width={100} height={100}/></td>
             <td><button className='btn btn-arning btn-sm'><i class="fa-sharp fa-solid fa-pen-to-square"></i>Update</button></td>
-            <td><button className='btn btn-danger btn-sm'><i class="fa-sharp fa-solid fa-trash"></i>Delete</button></td>
+            <td><button className='btn btn-danger btn-sm' onClick={()=>handleDelete(art._id)}><i class="fa-sharp fa-solid fa-trash"></i>Delete</button></td>
           </tr>
       )}
     </tbody>

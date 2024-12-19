@@ -1,12 +1,40 @@
-import { useState } from "react"
+import axios from "axios"
+import { useEffect, useState } from "react"
 import { Form,Col,Row } from "react-bootstrap"
-import { Link } from "react-router-dom"
+import { Link,useNavigate } from "react-router-dom"
 
 
 const Insertarticle = () => {
+  const navigate=useNavigate()
   const [article,setArticles]=useState({})
-  
+  const[scategories,setScategories]=useState([])
 
+const getscategories=async()=>{
+
+    try{
+      const res=await axios.get("http://localhost:3001/api/scategorie")
+      setScategories(res.data)
+    }
+    catch(error){
+      console.log(error)
+    }
+ }
+ useEffect(()=>{
+  getscategories()
+ },[])
+
+ const handleSave=async(e)=>{
+    try{
+      e.preventDefault()
+      await axios.post("http://localhost:3001/api/article",article)
+      .then(res=>{
+        navigate("/articles")
+
+      })
+    }catch(error){
+      console.log(error)
+    }
+ }
   return (
     <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
       <h1>Inserer un article</h1>
@@ -62,8 +90,16 @@ const Insertarticle = () => {
       <Form.Group as={Col} md='12'>
         <Form.Label>Scategorie</Form.Label>
         <Form.Control type="text" 
+        as={"select"}
         placeholder="S/categorie" 
-        value={article.scategorieID} onChange={(e)=> setArticles({...article,scategorieID:e.target.value})} />
+        value={article.scategorieID} onChange={(e)=> setArticles({...article,scategorieID:e.target.value})} >
+        <option>----Selectionner une sous categories----</option>
+        {
+          scategories.map((scat,index)=>
+          <option value={scat._id} key={index}>{scat.nomscategorie}</option>
+          )
+        }
+        </Form.Control>
       </Form.Group>
       </Row>
     </Form>
