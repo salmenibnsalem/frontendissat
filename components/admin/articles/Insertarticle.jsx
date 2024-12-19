@@ -12,7 +12,7 @@ const Insertarticle = () => {
 const getscategories=async()=>{
 
     try{
-      const res=await axios.get("http://localhost:3001/api/scategorie")
+      const res=await axios.get("https://backend-ecommerce-one-bay.vercel.app/api/scategorie")
       setScategories(res.data)
     }
     catch(error){
@@ -26,7 +26,7 @@ const getscategories=async()=>{
  const handleSave=async(e)=>{
     try{
       e.preventDefault()
-      await axios.post("http://localhost:3001/api/article",article)
+      await axios.post("https://backend-ecommerce-one-bay.vercel.app/api/article",article)
       .then(res=>{
         navigate("/articles")
 
